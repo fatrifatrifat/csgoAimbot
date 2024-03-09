@@ -51,10 +51,15 @@ void main()
 
     uintptr_t currEntAddr;
     uintptr_t closestEnemyAddr;
+
+    bool shifPress = false;
     
     while (true)
     {
-        if (GetAsyncKeyState(VK_HOME) & 1)
+
+        shifPress = GetAsyncKeyState(VK_SHIFT) & 0x8000;
+
+        if (shifPress)
         {
             std::cout << "Home pressed" << std::endl;
 
@@ -68,11 +73,12 @@ void main()
             myEnt.originPos = *(Vec3D*)(val.localPlayer + m_vecOrigin);
             myEnt.viewAngleVec = *(Vec3D*)(val.localPlayer + m_vecViewOffset);
             myEnt.viewAngle = *(Vec3D*)(*(uintptr_t*)(val.engineModule + dwClientState) + dwClientState_ViewAngles);
-            
 
             std::cout << "My health: " << myEnt.health << std::endl;
             std::cout << "My team: " << myEnt.team << std::endl;
             std::cout << "My position: (" << myEnt.originPos.x << ", " << myEnt.originPos.y << ", " << myEnt.originPos.z << ")" << std::endl;
+
+            
 
             std::cout << '\n' << "-----------------------------------" << std::endl;
 
@@ -127,7 +133,9 @@ void main()
             
             newAngle = myEnt.headPos.relativeAngle(currEnt.headPos);
 
-            
+            myEnt.viewAngle = (newAngle);
+
+            *(Vec3D*)(*(uintptr_t*)(val.engineModule + dwClientState) + dwClientState_ViewAngles) = newAngle;
 
             std::cout << "Finished" << std::endl;
         }

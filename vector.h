@@ -17,25 +17,28 @@ struct Vec3D
 		return { this->x - other.x, this->y - other.y, this->z - other.z };
 	}
 
+	
 	Vec3D relativeAngle(Vec3D other)
 	{
+		
 		float dx = other.x - this->x;
 		float dy = other.y - this->y;
 		float dz = other.z - this->z;
 
+		
 		float hypotenus = this->distanceCalculate(other);
 
+		//float pitch = -asin(delta.z / hypotenuse) * (180 / static_cast<float>(PI));
+		//float yaw = atan2(delta.y, delta.x) * (180 / static_cast<float>(PI));
+		
 		float yaw = std::atan2(dy, dx) * (180.0f / std::numbers::pi);
+		
+		float pitch = -(std::asin(dz / hypotenus) * (180.0f / std::numbers::pi));
 
-		float pitch = -std::sin(dz, std::sqrt(dx * dx + dy * dy)) * (180.0f / std::numbers::pi);
+		return { pitch, yaw, 0.0f };
 
-		if (pitch >= -89 && pitch <= 89 && yaw >= -180 && yaw <= 180)
-		{
-			float pitchDistance = fabs(pitch - this->x);
-			float yawDistance = fabs(yaw - this->y);
-
-		return { yaw, pitch, 0.0f };
 	}
+	
 
 
 	float distanceCalculate(Vec3D other)
